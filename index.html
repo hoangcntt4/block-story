@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Một điều muốn nói với em</title>
+  <meta name="description" content="Một lời tỏ tình nhỏ, nhưng thật lòng." />
+  <style>
+    :root { --ink:#f9f4ff; --muted:#c7b9d8; --pink:#ff80b5; --violet:#9b7bff; --night:#0b0718; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); font-family:'Segoe UI', Arial, sans-serif; background:linear-gradient(125deg,#0b0718,#24133e,#160a2c,#35162e); background-size:300% 300%; animation:nightShift 18s ease infinite; min-height:100vh; overflow-x:hidden; }
+    body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.25; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:62px 62px; mask-image:linear-gradient(to bottom,#000,transparent 80%); }
+    .wrap { width:min(980px,92vw); margin:auto; position:relative; z-index:1; }
+    header { min-height:100vh; display:grid; place-items:center; text-align:center; padding:60px 0; position:relative; }
+    .eyebrow { color:var(--pink); letter-spacing:.3em; text-transform:uppercase; font:600 11px/1.4 Arial,sans-serif; animation:fadeUp 1s ease both; }
+    h1, h2 { font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif; }
+    h1 { font-size:clamp(48px,10vw,108px); line-height:.9; font-weight:400; margin:24px 0; letter-spacing:-.06em; text-shadow:0 0 40px #b97cff55; animation:fadeUp 1s .15s ease both; }
+    h1 em { color:#ffb1d0; font-style:italic; }
+    .intro { color:var(--muted); font:16px/1.7 Arial,sans-serif; max-width:500px; margin:0 auto 30px; animation:fadeUp 1s .3s ease both; }
+    .scroll { color:#d9c9e8; font:12px Arial,sans-serif; letter-spacing:.12em; opacity:.8; animation:pulse 2s infinite; }
+    .scroll:after { content:'↓'; display:block; font-size:24px; margin-top:10px; }
+    .card { background:linear-gradient(145deg,#ffffff10,#ffffff03); border:1px solid #ffffff1a; border-radius:28px; padding:clamp(28px,7vw,70px); box-shadow:0 25px 100px #0005, inset 0 1px #ffffff20; backdrop-filter:blur(15px); }
+    .letter { margin:60px auto 140px; max-width:760px; text-align:left; }
+    .letter h2 { font-size:clamp(30px,5vw,50px); font-weight:400; margin:0 0 30px; }
+    .letter p { color:#e5daed; font-size:clamp(18px,2.5vw,23px); line-height:1.75; margin:18px 0; }
+    .highlight { color:#ff9fc5; }
+    .signature { text-align:right; color:var(--pink); font-style:italic; font-size:24px; margin-top:40px; }
+    .question { text-align:center; margin:0 auto 120px; max-width:700px; }
+    .question h2 { font-size:clamp(38px,7vw,72px); font-weight:400; margin:0 0 32px; }
+    .buttons { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; position:relative; min-height:54px; }
+    button { border:0; cursor:pointer; border-radius:999px; padding:16px 28px; font:bold 14px Arial,sans-serif; transition:transform .2s, box-shadow .2s; }
+    #yes { color:#270d27; background:linear-gradient(135deg,#ffb2d1,#ff6da9); box-shadow:0 10px 30px #ff76ac55; }
+    #yes:hover { transform:translateY(-4px) scale(1.05); box-shadow:0 15px 38px #ff76ac88; }
+    #no { color:#eee4fa; background:#ffffff13; border:1px solid #ffffff20; }
+    footer { text-align:center; color:#756685; font:12px Arial,sans-serif; padding:0 0 34px; }
+    .heart { position:fixed; bottom:-30px; pointer-events:none; z-index:2; animation:floatUp linear forwards; filter:drop-shadow(0 0 7px #ff80b5); }
+    .spark { position:fixed; width:3px; height:3px; border-radius:50%; background:white; pointer-events:none; animation:twinkle 2.8s ease-in-out infinite; }
+    .modal { position:fixed; inset:0; background:#080411dd; display:grid; place-items:center; padding:20px; opacity:0; visibility:hidden; transition:.4s; z-index:5; }
+    .modal.show { opacity:1; visibility:visible; }
+    .modal .card { text-align:center; max-width:560px; transform:translateY(25px) scale(.96); transition:.4s; }
+    .modal.show .card { transform:none; animation:romanticFloat 4s ease-in-out infinite; }
+    .modal.show:after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle, #ff9fc522, transparent 58%); animation:successGlow 2s ease-in-out infinite; }
+    .celebrate-flash { position:fixed; inset:0; z-index:6; pointer-events:none; background:#fff; opacity:0; animation:flash .7s ease-out forwards; }
+    .ring { position:fixed; left:50%; top:50%; width:30px; height:30px; border:3px solid #ff9fc5; border-radius:50%; z-index:6; pointer-events:none; transform:translate(-50%,-50%); animation:ringOut 1.5s ease-out forwards; box-shadow:0 0 25px #ff80b5; }
+    .firework { position:fixed; left:50%; top:50%; width:7px; height:7px; border-radius:50%; z-index:6; pointer-events:none; background:var(--c); box-shadow:0 0 14px var(--c); animation:firework 1.2s cubic-bezier(.1,.7,.2,1) forwards; }
+    .modal h2 { font-size:48px; margin:0 0 15px; font-weight:400; }
+    .modal p { font:16px/1.7 Arial,sans-serif; color:var(--muted); }
+    .sad-modal .card { border-color:#ffffff12; }
+    .sad-modal h2 { color:#d8cde4; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+    @keyframes pulse { 50%{opacity:.35;transform:translateY(5px)} }
+    @keyframes floatUp { to{transform:translateY(-110vh) rotate(25deg); opacity:0} }
+    @keyframes twinkle { 0%,100%{opacity:.15;transform:scale(.6)} 50%{opacity:1;transform:scale(1.5)} }
+    @keyframes successGlow { 50%{opacity:.45;transform:scale(1.12)} }
+    @keyframes nightShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+    @keyframes romanticFloat { 0%,100%{transform:translateY(0) rotate(-.4deg)} 50%{transform:translateY(-9px) rotate(.4deg)} }
+    @keyframes flash { 0%{opacity:.9} 100%{opacity:0} }
+    @keyframes ringOut { to{width:96vw;height:96vw;opacity:0;border-width:1px} }
+    @keyframes firework { to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0} }
+    .confetti { position:fixed; top:-20px; width:9px; height:18px; z-index:7; pointer-events:none; animation:confettiFall 2.8s cubic-bezier(.2,.7,.3,1) forwards; }
+    @keyframes confettiFall { to { transform:translate3d(var(--x),110vh,0) rotate(760deg); opacity:0; } }
+    @media(max-width:600px){ .letter{margin-top:20px}.card{border-radius:22px} h1{font-size:60px}.letter p{font-size:18px} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">một bí mật nhỏ dành cho em</div>
+        <h1>Ngọc,<br><em>anh thích em.</em></h1>
+        <p class="intro">Có một điều anh đã muốn nói từ lâu. Hôm nay, anh gom hết can đảm vào trang web nhỏ này.</p>
+        <div class="scroll">cuộn xuống nhé</div>
+      </div>
+    </header>
+
+    <section class="letter card">
+      <h2>Gửi người làm ngày thường trở nên đặc biệt</h2>
+      <p>Anh không biết khoảnh khắc nào bắt đầu — có thể là một nụ cười, một câu nói vu vơ, hay chỉ là cách em xuất hiện và khiến mọi thứ xung quanh dịu lại.</p>
+      <p>Anh chỉ biết rằng, mỗi khi nghĩ về những điều vui vẻ, <span class="highlight">anh thường nghĩ đến em đầu tiên.</span></p>
+      <p>Anh không hứa sẽ trở thành người hoàn hảo. Nhưng anh hứa sẽ luôn thành thật, lắng nghe và trân trọng những điều nhỏ bé làm em vui.</p>
+      <div class="signature">— một người anh thật lòng</div>
+    </section>
+
+    <section class="question">
+      <div class="eyebrow">và điều quan trọng nhất là...</div>
+      <h2>Em có muốn cho anh<br><em>một cơ hội không?</em></h2>
+      <div class="buttons"><button id="yes">Có, em đồng ý ♡</button><button id="no">Để em suy nghĩ thêm</button></div>
+    </section>
+    <footer>made with courage & a little bit of stardust ✦</footer>
+  </main>
+
+  <div class="modal" id="modal"><div class="card"><div style="font-size:54px">💗</div><h2>Vậy là mình hẹn hò nhé?</h2><p>Ngày hôm nay chắc chắn sẽ là một trong những ngày đáng nhớ nhất của anh. Cảm ơn em vì đã cho anh một cơ hội.</p><button id="close">Cảm ơn em ♡</button></div></div>
+  <div class="modal sad-modal" id="sadModal"><div class="card"><div style="font-size:48px">🌙</div><h2>Anh hiểu rồi.</h2><p>Anh hơi buồn một chút, nhưng anh vẫn trân trọng sự thật lòng của em. Cảm ơn em đã đọc hết những điều anh muốn nói.</p><button id="sadClose">Đóng lại</button></div></div>
+  <script>
+    const modal=document.querySelector('#modal');
+    const burst=()=>{ const flash=document.createElement('i');flash.className='celebrate-flash';document.body.append(flash);setTimeout(()=>flash.remove(),800); for(let r=0;r<3;r++){const ring=document.createElement('i');ring.className='ring';ring.style.animationDelay=r*.22+'s';document.body.append(ring);setTimeout(()=>ring.remove(),1900)} for(let f=0;f<4;f++){setTimeout(()=>{for(let i=0;i<24;i++){const p=document.createElement('i');p.className='firework';const a=(Math.PI*2*i)/24, d=75+Math.random()*170;p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');p.style.setProperty('--c',['#ff80b5','#ffd166','#bca7ff','#8de7d4'][Math.floor(Math.random()*4)]);document.body.append(p);setTimeout(()=>p.remove(),1400)}},f*240)} for(let i=0;i<42;i++){const h=document.createElement('span');h.className='heart';h.textContent=['♥','♡','✦'][Math.floor(Math.random()*3)];h.style.left=Math.random()*100+'vw';h.style.color=['#ff80b5','#ffbad5','#bca7ff'][Math.floor(Math.random()*3)];h.style.fontSize=12+Math.random()*25+'px';h.style.animationDuration=3+Math.random()*3+'s';document.body.append(h);setTimeout(()=>h.remove(),6500)} for(let i=0;i<140;i++){const c=document.createElement('i');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=['#ff80b5','#ffd166','#9b7bff','#8de7d4'][Math.floor(Math.random()*4)];c.style.setProperty('--x',(Math.random()*240-120)+'px');c.style.animationDelay=Math.random()*.7+'s';document.body.append(c);setTimeout(()=>c.remove(),3500)} };
+    document.querySelector('#yes').onclick=()=>{modal.classList.add('show');burst()}; document.querySelector('#close').onclick=()=>modal.classList.remove('show');
+    document.querySelector('#no').onclick=()=>document.querySelector('#sadModal').classList.add('show');
+    document.querySelector('#sadClose').onclick=()=>document.querySelector('#sadModal').classList.remove('show');
+    for(let i=0;i<34;i++){const s=document.createElement('i');s.className='spark';s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';s.style.animationDelay=Math.random()*3+'s';document.body.append(s)}
+    setInterval(()=>{const h=document.createElement('span');h.className='heart';h.textContent='♡';h.style.left=Math.random()*100+'vw';h.style.color='#ff9fc5';h.style.fontSize=14+Math.random()*12+'px';h.style.animationDuration='7s';document.body.append(h);setTimeout(()=>h.remove(),7000)},1500);
+  </script>
+</body>
+</html>
+
