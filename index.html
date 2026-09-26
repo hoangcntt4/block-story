@@ -12,7 +12,15 @@
     body { margin:0; color:var(--ink); font-family:'Segoe UI', Arial, sans-serif; background:linear-gradient(125deg,#0b0718,#24133e,#160a2c,#35162e); background-size:300% 300%; animation:nightShift 18s ease infinite; min-height:100vh; overflow-x:hidden; }
     body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.25; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:62px 62px; mask-image:linear-gradient(to bottom,#000,transparent 80%); }
     .wrap { width:min(980px,92vw); margin:auto; position:relative; z-index:1; }
-    .story-stage { min-height:100svh; display:grid; place-items:center; padding:24px 0; }
+    .story-stage { min-height:100svh; display:grid; place-items:center; padding:24px 0; position:relative; overflow:hidden; }
+    #matrixCanvas { position:fixed; inset:0; width:100%; height:100%; background:#020204; z-index:0; }
+    .matrix-vignette { position:fixed; inset:0; pointer-events:none; z-index:0; background:radial-gradient(ellipse at center,#0000 0%,#0008 72%,#000 100%); }
+    .heart-intro { width:min(700px,94vw); min-height:82svh; display:grid; place-items:center; text-align:center; position:relative; z-index:1; }
+    .heart-visual { position:relative; width:min(460px,88vw); height:min(460px,88vw); display:grid; place-items:center; }
+    .heart-visual:before { content:'♡'; position:absolute; inset:0; display:grid; place-items:center; color:#fff4ff; font:clamp(250px,60vw,470px)/1 Arial,sans-serif; text-shadow:0 0 12px #fff,0 0 35px #d6a9ff,0 0 90px #ff8ccd; animation:heartBreathe 3s ease-in-out infinite; }
+    .heart-label { position:relative; z-index:1; padding-top:8px; color:#fff; font:600 clamp(15px,4vw,26px) 'Segoe UI',Arial,sans-serif; text-shadow:0 0 10px #fff,0 0 24px #ff9ed2; }
+    .heart-label small { display:block; color:#f7dff0; font-size:.52em; letter-spacing:.18em; margin-top:10px; font-weight:400; }
+    @keyframes heartBreathe { 50%{transform:scale(1.04);filter:brightness(1.25)} }
     .code-screen { width:min(680px,94vw); min-height:360px; padding:22px; border:1px solid #6cffc533; border-radius:18px; background:#020a0bcc; box-shadow:0 0 50px #00e5a522, inset 0 0 35px #00e5a50b; color:#8fffe0; font:13px/1.8 Consolas,'Courier New',monospace; text-align:left; }
     .terminal-top { display:flex; gap:7px; margin-bottom:20px; border-bottom:1px solid #6cffc51a; padding-bottom:14px; }
     .terminal-top i { width:9px; height:9px; border-radius:50%; background:#ff6f91; }.terminal-top i:nth-child(2){background:#ffd166}.terminal-top i:nth-child(3){background:#8de7d4}
@@ -79,7 +87,7 @@
 </head>
 <body>
   <main class="wrap">
-    <section class="story-stage" id="codeStage"><div class="code-screen"><div class="terminal-top"><i></i><i></i><i></i></div><div class="code-line"><span class="key">const</span> feeling = <span class="value">"something_special"</span>;</div><div class="code-line"><span class="key">await</span> decrypt(<span class="value">"my_heart"</span>);</div><div class="code-line">loading memories... <span class="value">done</span></div><div class="code-line">finding the right words... <span class="value">done</span></div><div class="code-line"><span class="key">if</span> (you_are_reading_this) {</div><div class="code-line">&nbsp;&nbsp;message = <span class="value">"anh có điều muốn nói"</span>;</div><div class="code-line">}<span class="cursor"></span></div><div class="reveal-prompt">Một bí mật đang được giải mã...<br><button id="reveal">Mở lời nhắn ♡</button></div></div></section>
+    <section class="story-stage" id="codeStage"><canvas id="matrixCanvas"></canvas><div class="matrix-vignette"></div><div class="heart-intro"><div><div class="heart-visual"><div class="heart-label">Ngọc <span style="color:#ff9bc9">♥</span> Anh<small>một điều anh muốn nói</small></div></div><div class="reveal-prompt">Mở khóa lời nhắn của anh<br><button id="reveal">Mở lời nhắn ♡</button></div></div></div></section>
     <div class="real-content" id="realContent">
       <header><div><div class="eyebrow">một điều anh muốn nói</div><h1>Ngọc,<br><em>anh thích em.</em></h1><p class="intro">Anh đã nghĩ rất lâu mới dám nói điều này.</p><div class="scroll">còn một câu hỏi</div></div></header>
       <section class="question card"><div class="eyebrow">và điều quan trọng nhất là...</div><h2>Em có muốn cho anh<br><em>một cơ hội không?</em></h2><div class="buttons"><button id="yes">Có, em đồng ý ♡</button><button id="no">Để em suy nghĩ thêm</button></div></section>
@@ -90,6 +98,10 @@
   <div class="modal" id="modal"><div class="card"><div style="font-size:54px">💗</div><h2>Vậy là mình hẹn hò nhé?</h2><p>Ngày hôm nay chắc chắn sẽ là một trong những ngày đáng nhớ nhất của anh. Cảm ơn em vì đã cho anh một cơ hội.</p><button id="close">Cảm ơn em ♡</button></div></div>
   <div class="modal sad-modal" id="sadModal"><div class="card"><div style="font-size:48px">🌙</div><h2>Anh hiểu rồi.</h2><p>Anh hơi buồn một chút, nhưng anh vẫn trân trọng sự thật lòng của em. Cảm ơn em đã đọc hết những điều anh muốn nói.</p><button id="sadClose">Đóng lại</button></div></div>
   <script>
+    const matrixCanvas=document.querySelector('#matrixCanvas'), matrixCtx=matrixCanvas.getContext('2d');
+    let matrixW,matrixH,columns,drops; const matrixChars='01アイウエオカキクケコ♥♡<>/{}[]$#';
+    const resizeMatrix=()=>{matrixW=matrixCanvas.width=innerWidth*devicePixelRatio;matrixH=matrixCanvas.height=innerHeight*devicePixelRatio;matrixCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);columns=Math.ceil(innerWidth/16);drops=Array.from({length:columns},()=>Math.random()*-40)};
+    const drawMatrix=()=>{matrixCtx.fillStyle='rgba(2,2,4,.16)';matrixCtx.fillRect(0,0,innerWidth,innerHeight);matrixCtx.font='12px monospace';for(let i=0;i<columns;i++){const char=matrixChars[Math.floor(Math.random()*matrixChars.length)];const x=i*16,y=drops[i]*16;matrixCtx.fillStyle=Math.random()>.88?'#fff6ff':'rgba(224,190,245,.72)';matrixCtx.fillText(char,x,y);if(y>innerHeight&&Math.random()>.975)drops[i]=0;drops[i]++}requestAnimationFrame(drawMatrix)}; resizeMatrix(); addEventListener('resize',resizeMatrix); drawMatrix();
     const reveal=()=>{document.querySelector('#codeStage').style.display='none';document.querySelector('#realContent').classList.add('visible');window.scrollTo({top:0,behavior:'smooth'})};
     document.querySelector('#reveal').onclick=reveal;
     setTimeout(reveal,7000);
