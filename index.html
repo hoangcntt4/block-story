@@ -25,8 +25,12 @@
     .sequence-line { position:absolute; width:90vw; color:#fff4ff; font-size:clamp(22px,6vw,42px); letter-spacing:.02em; opacity:0; transform:translateY(12px); transition:opacity 1.2s ease,transform 1.2s ease; text-shadow:0 0 12px #fff,0 0 30px #e5a5ff; }
     .sequence-line.active { opacity:1; transform:none; }
     .sequence-line em { color:#ffabd0; font-style:normal; }
-    .final-heart { opacity:0; transform:scale(.8); transition:opacity 2s ease,transform 2s ease; }
+    .final-heart { opacity:0; transform:scale(.8); transition:opacity 2s ease,transform 2s ease; position:relative; }
     .final-heart.active { opacity:1; transform:scale(1); }
+    .final-heart.active:before { content:''; position:absolute; width:min(72vw,360px); height:min(72vw,360px); left:50%; top:50%; transform:translate(-50%,-50%); border:1px solid #ffb7dc55; border-radius:50%; box-shadow:0 0 35px #ff9ed455, inset 0 0 35px #cda7ff22; animation:haloBreath 4s ease-in-out infinite; }
+    .final-heart.active:after { content:'✦  ·  ✧  ·  ✦'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:130%; color:#ffeafa; letter-spacing:1.4em; font-size:13px; opacity:.7; text-shadow:0 0 12px #fff,0 0 25px #ff9dd1; animation:orbitSpark 7s linear infinite; }
+    @keyframes haloBreath { 50%{transform:translate(-50%,-50%) scale(1.12);opacity:.45;box-shadow:0 0 70px #ff9ed488,inset 0 0 50px #cda7ff44} }
+    @keyframes orbitSpark { to{transform:translate(-50%,-50%) rotate(360deg)} }
     @keyframes heartBreathe { 50%{transform:scale(1.04);filter:brightness(1.25)} }
     @keyframes particlePulse { 0%,100%{opacity:.35;transform:scale(.65)} 50%{opacity:1;transform:scale(1.35)} }
     .code-screen { width:min(680px,94vw); min-height:360px; padding:22px; border:1px solid #6cffc533; border-radius:18px; background:#020a0bcc; box-shadow:0 0 50px #00e5a522, inset 0 0 35px #00e5a50b; color:#8fffe0; font:13px/1.8 Consolas,'Courier New',monospace; text-align:left; }
@@ -95,7 +99,7 @@
 </head>
 <body>
   <main class="wrap">
-    <section class="story-stage" id="codeStage"><canvas id="matrixCanvas"></canvas><div class="matrix-vignette"></div><div class="message-sequence"><div class="sequence-line active">Ngọc...</div><div class="sequence-line">Anh có một điều muốn nói.</div><div class="sequence-line">Anh đã nghĩ về em <em>rất lâu</em>.</div><div class="sequence-line">Và hôm nay, anh muốn nói rằng...</div><div class="sequence-line"><em>Anh thích em.</em></div><div class="sequence-line">Em cho anh một cơ hội nhé?</div><div class="sequence-line"><em>Làm bạn gái anh nhé !!!</em></div><div class="final-heart"><div class="heart-visual"><div class="heart-label">Ngọc <span style="color:#ff9bc9">-</span> Hoàng<small>một điều anh muốn nói</small></div></div></div></div></section>
+    <section class="story-stage" id="codeStage"><canvas id="matrixCanvas"></canvas><div class="matrix-vignette"></div><div class="message-sequence"><div class="sequence-line active">Ngọc...</div><div class="sequence-line">Anh có một điều muốn nói.</div><div class="sequence-line">Anh đã nghĩ về em <em>rất lâu</em>.</div><div class="sequence-line">Và hôm nay, anh muốn nói rằng...</div><div class="sequence-line"><em>Anh thích em.</em></div><div class="sequence-line">Em cho anh một cơ hội nhé?</div><div class="sequence-line"><em>Làm bạn gái anh nhé !!!</em></div><div class="final-heart"><div class="heart-visual"><div class="heart-label">Ngọc <span style="color:#ff9bc9">-</span> Hoàng</div></div></div></div></section>
     <div class="real-content" id="realContent">
       <header><div><div class="eyebrow">một điều anh muốn nói</div><h1>Ngọc,<br><em>anh thích em.</em></h1><p class="intro">Anh đã nghĩ rất lâu mới dám nói điều này.</p><div class="scroll">còn một câu hỏi</div></div></header>
       <section class="question card"><div class="eyebrow">và điều quan trọng nhất là...</div><h2>Em có muốn cho anh<br><em>một cơ hội không?</em></h2><div class="buttons"><button id="yes">Có, em đồng ý ♡</button><button id="no">Để em suy nghĩ thêm</button></div></section>
