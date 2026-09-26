@@ -12,6 +12,18 @@
     body { margin:0; color:var(--ink); font-family:'Segoe UI', Arial, sans-serif; background:linear-gradient(125deg,#0b0718,#24133e,#160a2c,#35162e); background-size:300% 300%; animation:nightShift 18s ease infinite; min-height:100vh; overflow-x:hidden; }
     body:before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.25; background-image:radial-gradient(#fff 1px,transparent 1px); background-size:62px 62px; mask-image:linear-gradient(to bottom,#000,transparent 80%); }
     .wrap { width:min(980px,92vw); margin:auto; position:relative; z-index:1; }
+    .story-stage { min-height:100svh; display:grid; place-items:center; padding:24px 0; }
+    .code-screen { width:min(680px,94vw); min-height:360px; padding:22px; border:1px solid #6cffc533; border-radius:18px; background:#020a0bcc; box-shadow:0 0 50px #00e5a522, inset 0 0 35px #00e5a50b; color:#8fffe0; font:13px/1.8 Consolas,'Courier New',monospace; text-align:left; }
+    .terminal-top { display:flex; gap:7px; margin-bottom:20px; border-bottom:1px solid #6cffc51a; padding-bottom:14px; }
+    .terminal-top i { width:9px; height:9px; border-radius:50%; background:#ff6f91; }.terminal-top i:nth-child(2){background:#ffd166}.terminal-top i:nth-child(3){background:#8de7d4}
+    .code-line { opacity:0; animation:codeIn .55s forwards; white-space:nowrap; overflow:hidden; }
+    .code-line:nth-child(2){animation-delay:.3s}.code-line:nth-child(3){animation-delay:.8s}.code-line:nth-child(4){animation-delay:1.3s}.code-line:nth-child(5){animation-delay:1.8s}.code-line:nth-child(6){animation-delay:2.3s}.code-line:nth-child(7){animation-delay:2.8s}
+    .code-line .key { color:#d79cff }.code-line .value { color:#ffd166 }.cursor { display:inline-block; width:8px; height:15px; background:#8fffe0; vertical-align:middle; animation:blink 1s steps(2) infinite; }
+    .reveal-prompt { opacity:0; animation:fadeUp 1s 3.5s forwards; margin-top:28px; text-align:center; color:#d0fff4; font-family:'Segoe UI',Arial,sans-serif; }
+    .reveal-prompt button { margin-top:14px; color:#05251f; background:linear-gradient(135deg,#a4ffe6,#7ce5c7); box-shadow:0 0 24px #70efd055; }
+    .real-content { display:none; animation:fadeUp 1.2s ease both; }
+    .real-content.visible { display:block; }
+    @keyframes codeIn { to { opacity:1; } } @keyframes blink { 50%{opacity:0} }
     header { min-height:100vh; display:grid; place-items:center; text-align:center; padding:60px 0; position:relative; }
     .eyebrow { color:var(--pink); letter-spacing:.3em; text-transform:uppercase; font:600 11px/1.4 Arial,sans-serif; animation:fadeUp 1s ease both; }
     h1, h2 { font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif; }
@@ -67,34 +79,20 @@
 </head>
 <body>
   <main class="wrap">
-    <header>
-      <div>
-        <div class="eyebrow">một bí mật nhỏ dành cho em</div>
-        <h1>Ngọc,<br><em>anh thích em.</em></h1>
-        <p class="intro">Có một điều anh đã muốn nói từ lâu. Hôm nay, anh gom hết can đảm vào trang web nhỏ này.</p>
-        <div class="scroll">cuộn xuống nhé</div>
-      </div>
-    </header>
-
-    <section class="letter card">
-      <h2>Gửi người làm ngày thường trở nên đặc biệt</h2>
-      <p>Anh không biết khoảnh khắc nào bắt đầu — có thể là một nụ cười, một câu nói vu vơ, hay chỉ là cách em xuất hiện và khiến mọi thứ xung quanh dịu lại.</p>
-      <p>Anh chỉ biết rằng, mỗi khi nghĩ về những điều vui vẻ, <span class="highlight">anh thường nghĩ đến em đầu tiên.</span></p>
-      <p>Anh không hứa sẽ trở thành người hoàn hảo. Nhưng anh hứa sẽ luôn thành thật, lắng nghe và trân trọng những điều nhỏ bé làm em vui.</p>
-      <div class="signature">— một người anh thật lòng</div>
-    </section>
-
-    <section class="question">
-      <div class="eyebrow">và điều quan trọng nhất là...</div>
-      <h2>Em có muốn cho anh<br><em>một cơ hội không?</em></h2>
-      <div class="buttons"><button id="yes">Có, em đồng ý ♡</button><button id="no">Để em suy nghĩ thêm</button></div>
-    </section>
-    <footer>made with courage & a little bit of stardust ✦</footer>
+    <section class="story-stage" id="codeStage"><div class="code-screen"><div class="terminal-top"><i></i><i></i><i></i></div><div class="code-line"><span class="key">const</span> feeling = <span class="value">"something_special"</span>;</div><div class="code-line"><span class="key">await</span> decrypt(<span class="value">"my_heart"</span>);</div><div class="code-line">loading memories... <span class="value">done</span></div><div class="code-line">finding the right words... <span class="value">done</span></div><div class="code-line"><span class="key">if</span> (you_are_reading_this) {</div><div class="code-line">&nbsp;&nbsp;message = <span class="value">"anh có điều muốn nói"</span>;</div><div class="code-line">}<span class="cursor"></span></div><div class="reveal-prompt">Một bí mật đang được giải mã...<br><button id="reveal">Mở lời nhắn ♡</button></div></div></section>
+    <div class="real-content" id="realContent">
+      <header><div><div class="eyebrow">một điều anh muốn nói</div><h1>Ngọc,<br><em>anh thích em.</em></h1><p class="intro">Anh đã nghĩ rất lâu mới dám nói điều này.</p><div class="scroll">còn một câu hỏi</div></div></header>
+      <section class="question card"><div class="eyebrow">và điều quan trọng nhất là...</div><h2>Em có muốn cho anh<br><em>một cơ hội không?</em></h2><div class="buttons"><button id="yes">Có, em đồng ý ♡</button><button id="no">Để em suy nghĩ thêm</button></div></section>
+      <footer>made with courage & a little bit of stardust ✦</footer>
+    </div>
   </main>
 
   <div class="modal" id="modal"><div class="card"><div style="font-size:54px">💗</div><h2>Vậy là mình hẹn hò nhé?</h2><p>Ngày hôm nay chắc chắn sẽ là một trong những ngày đáng nhớ nhất của anh. Cảm ơn em vì đã cho anh một cơ hội.</p><button id="close">Cảm ơn em ♡</button></div></div>
   <div class="modal sad-modal" id="sadModal"><div class="card"><div style="font-size:48px">🌙</div><h2>Anh hiểu rồi.</h2><p>Anh hơi buồn một chút, nhưng anh vẫn trân trọng sự thật lòng của em. Cảm ơn em đã đọc hết những điều anh muốn nói.</p><button id="sadClose">Đóng lại</button></div></div>
   <script>
+    const reveal=()=>{document.querySelector('#codeStage').style.display='none';document.querySelector('#realContent').classList.add('visible');window.scrollTo({top:0,behavior:'smooth'})};
+    document.querySelector('#reveal').onclick=reveal;
+    setTimeout(reveal,7000);
     const modal=document.querySelector('#modal');
     const burst=()=>{ const flash=document.createElement('i');flash.className='celebrate-flash';document.body.append(flash);setTimeout(()=>flash.remove(),1300); for(let r=0;r<2;r++){const ring=document.createElement('i');ring.className='ring';ring.style.animationDelay=r*.55+'s';document.body.append(ring);setTimeout(()=>ring.remove(),3800)} for(let h=0;h<14;h++){const big=document.createElement('i');big.className='love-heart';big.textContent=['♥','♡','💗'][h%3];const angle=(Math.PI*2*h)/14, distance=80+Math.random()*105;big.style.setProperty('--hx',(Math.cos(angle)*distance)+'px');big.style.setProperty('--hy',(Math.sin(angle)*distance)+'px');big.style.setProperty('--hr',(Math.random()*36-18)+'deg');big.style.animationDelay=h*.12+'s';document.body.append(big);setTimeout(()=>big.remove(),5500)} for(let f=0;f<3;f++){setTimeout(()=>{for(let i=0;i<18;i++){const p=document.createElement('i');p.className='firework';const a=(Math.PI*2*i)/18, d=75+Math.random()*170;p.style.left=(18+Math.random()*64)+'vw';p.style.top=(18+Math.random()*46)+'vh';p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');p.style.setProperty('--c',['#ff80b5','#ffd166','#bca7ff','#8de7d4'][Math.floor(Math.random()*4)]);document.body.append(p);setTimeout(()=>p.remove(),2800)}},f*700)} for(let i=0;i<24;i++){const h=document.createElement('span');h.className='heart';h.textContent=['♥','♡','✦'][Math.floor(Math.random()*3)];h.style.left=Math.random()*100+'vw';h.style.color=['#ff80b5','#ffbad5','#bca7ff'][Math.floor(Math.random()*3)];h.style.fontSize=12+Math.random()*25+'px';h.style.animationDuration=5+Math.random()*4+'s';document.body.append(h);setTimeout(()=>h.remove(),9500)} for(let i=0;i<70;i++){const c=document.createElement('i');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=['#ff80b5','#ffd166','#9b7bff','#8de7d4'][Math.floor(Math.random()*4)];c.style.setProperty('--x',(Math.random()*240-120)+'px');c.style.animationDelay=Math.random()*1.2+'s';document.body.append(c);setTimeout(()=>c.remove(),4000)} };
     document.querySelector('#yes').onclick=()=>{modal.classList.add('show');burst()}; document.querySelector('#close').onclick=()=>modal.classList.remove('show');
